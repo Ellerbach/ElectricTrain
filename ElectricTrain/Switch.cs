@@ -15,7 +15,7 @@ namespace ElectricTrain
         public int NumberSwitches { get; internal set; }
         static public int NUMBER_SWITCH_MAX { get { return 8; } }
         //private variables
-        private bool[] mSwitchStatus;        
+        private bool[] mSwitchStatus;
         private const Int32 SPI_CHIP_SELECT_LINE = 0;       /* Line 0 maps to physical pin number 24 on the Rpi2        */
         private SpiDevice MySwitch;
 
@@ -62,12 +62,10 @@ namespace ElectricTrain
             mSwitchStatus[NumSwitch] = value;
             // fill the buffer to be sent
             ushort[] mySign = new ushort[1] { 0 };
-            for (ushort i = 0; i < NumberSwitches; i++)
-                if (mSwitchStatus[i])
-                    if (mSwitchStatus[i])
-                        mySign[0] = (ushort)(mySign[0] | (ushort)(1 << i * 2));
-                    else
-                        mySign[0] = (ushort)(mySign[0] | (ushort)(1 << (i * 2 + 1)));
+            if (mSwitchStatus[NumSwitch])
+                mySign[0] = (ushort)(mySign[0] | (ushort)(1 << NumSwitch * 2));
+            else
+                mySign[0] = (ushort)(mySign[0] | (ushort)(1 << (NumSwitch * 2 + 1)));
             //send the bytes
             if (MySwitch != null)
                 MySwitch.Write(Helpers.UshortToByte(mySign));
