@@ -15,6 +15,7 @@ namespace ElectricTrain.Controller
         static private Signal mySignal;
         static private Switch mySwitch;
         static private ParamRail myParamRail;
+        static private Train myTrain;
 
         public static async Task InitTrain()
         {
@@ -23,6 +24,7 @@ namespace ElectricTrain.Controller
             securityKey = paramSecurityKey + ParamEqual + MySecurityKey;
             mySignal = new Signal(myParamRail.NumberOfSignals);
             mySwitch = new Switch(myParamRail.NumberOfSwitchs);
+            myTrain = new Train((byte)myParamRail.NumberOfTrains);
 
         }
         private bool SecCheck(string strFilePath)
@@ -59,6 +61,14 @@ namespace ElectricTrain.Controller
             if (!SecCheck(param))
                 return new GetResponse(GetResponse.ResponseStatus.OK, ErrorAuth());
             return ProcessDisplayDefault(param);
+        }
+        //train.aspx
+        [UriFormat("/train.aspx{param}")]
+        public GetResponse Train(string param)
+        {
+            if (!SecCheck(param))
+                return new GetResponse(GetResponse.ResponseStatus.OK, ErrorAuth());
+            return ProcessTrain(param);
         }
     }
 }

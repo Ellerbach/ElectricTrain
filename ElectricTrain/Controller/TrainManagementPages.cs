@@ -11,7 +11,34 @@ namespace ElectricTrain.Controller
 {
     partial class TrainManagement
     {
+        private GetResponse ProcessTrain(string rawURL)
+        {
+            List<Param> Params = Param.decryptParam(rawURL);
+            string strResp = "";
+            int mSpeed = Param.CheckConvertInt32(Params, paramSinglePWM);
+            byte mTrain = Param.CheckConvertByte(Params, paramTrain);
 
+            if(mTrain>=myTrain.NumberTrains)
+            {
+                strResp = strProblem;
+                return new GetResponse(GetResponse.ResponseStatus.OK, strResp);
+            }
+            if (mSpeed == 255)
+                myTrain.SetSpeed(mTrain, 0);
+            else
+            {
+                int speed = myTrain.Speed[mTrain];
+                if (Math.Abs(mSpeed) == 1)
+                {
+                    speed += mSpeed * 5;
+                }
+                else
+                    speed = mSpeed;
+                myTrain.SetSpeed(mTrain, speed);
+            }
+            strResp = strOK;
+            return new GetResponse(GetResponse.ResponseStatus.OK, strResp);
+        }
         private GetResponse ProcessSwitch(string rawURL)
         {
             // decode params
@@ -88,16 +115,16 @@ namespace ElectricTrain.Controller
             strResp += "<h1>Gestion des trains</h1><TABLE BORDER=\"0\" >";
             for (byte i = 0; i < myParamRail.NumberOfTrains; i++)
             {
-                strResp += "<TR><FORM><TD>" + myParamRail.Trains[i].TrainName + "</TD><TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageSingleOutput + "?pw=" + (16 - myParamRail.Trains[i].Speed);
+                strResp += "<TR><FORM><TD>" + myParamRail.Trains[i].TrainName + "</TD><TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageTrain + "?pw=" + (- myParamRail.Trains[i].Speed) + "&tr=" + i;
                 strResp += "')\" value=\"<<\"></TD>";
-                strResp += "<TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageSingleCST + "?pw=5";
+                strResp += "<TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageTrain + "?pw=-1" + "&tr=" + i;
                 strResp += "')\" value=\"<\"></TD>";
-                strResp += "<TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageSingleOutput + "?pw=8";
+                strResp += "<TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageTrain + "?pw=255" + "&tr=" + i;
                 //strResp = WebServer.OutPutStream(response, strResp);
                 strResp += "')\" value=\"Stop\"></TD>";
-                strResp += "<TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageSingleCST + "?pw=4";
+                strResp += "<TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageTrain + "?pw=1" + "&tr=" + i;
                 strResp += "')\" value=\">\"></TD>";
-                strResp += "<TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageSingleOutput + "?pw=" + myParamRail.Trains[i].Speed;
+                strResp += "<TD><INPUT type=\"button\" onClick=\"btnclicked(document.getElementById('train" + i + "'),'" + pageTrain + "?pw=" + myParamRail.Trains[i].Speed + "&tr=" + i;
                 strResp += "')\" value=\">>\"></TD>";
                 strResp += "<TD><span id='train" + i + "'></span></FORM></TD></TR>";
                 //strResp = WebServer.OutPutStream(response, strResp);

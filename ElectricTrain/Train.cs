@@ -20,6 +20,7 @@ namespace ElectricTrain
         public static bool IsInitialized { get; internal set; }
         public static bool IsConnected { get; internal set; }
         public int NumberTrains { get; internal set; }
+        public TrainDirection Direction { get; internal set; }
         static public int NUMBER_TRAIN_MAX { get { return 4; } }
         //for the PWM 
         private byte[] PWMPins = { 3, 5, 6, 9 };
@@ -28,7 +29,7 @@ namespace ElectricTrain
         //for the right direction
         private byte[] RightPins = { 10, 11, 12, 13 };
 
-        public byte[] Speed = new byte[NUMBER_TRAIN_MAX];
+        public int[] Speed = new int[NUMBER_TRAIN_MAX];
 
         public Train(byte NumTrains)
         {
@@ -36,7 +37,7 @@ namespace ElectricTrain
             if (NumberTrains > NUMBER_TRAIN_MAX)
                 throw new Exception($"Too many trains, max is {NUMBER_TRAIN_MAX}");
             if (!IsInitialized)
-                InitAll().Wait();
+                InitAll(); //.Wait();
             
         }
 
@@ -71,20 +72,30 @@ namespace ElectricTrain
                 arduino.pinMode(PWMPins[i], PinMode.PWM);
                 arduino.pinMode(LeftPins[i], PinMode.OUTPUT);
                 arduino.pinMode(RightPins[i], PinMode.OUTPUT);
+                SetDirection((byte)i, TrainDirection.Forward);
+                SetSpeed((byte)i, 0);
             }
         }
 
-        public void SetSpeed(byte train, byte speed)
+        public void SetSpeed(byte train, int speed)
         {
             if(train>=NUMBER_TRAIN_MAX)
                 throw new Exception($"Too many trains, max is {NUMBER_TRAIN_MAX}");
             if (speed > 100)
                 speed = 100;
+            if (speed < -100)
+                speed = -100;
             Speed[train] = speed;
-            arduino.analogWrite(PWMPins[train], (ushort)(speed * 255 / 100));
+            if (speed <0)
+                SetDirection(train, TrainDirection.Backward);
+            else if (speed > 0)
+                SetDirection(train, TrainDirection.Forward);
+            else
+                SetDirection(train, TrainDirection.Stop);
+            arduino.analogWrite(PWMPins[train], (ushort)(Math.Abs(speed) * 255 / 100));
         }
 
-        public byte GetSpeed(byte train)
+        public int GetSpeed(byte train)
         {
             if (train >= NUMBER_TRAIN_MAX)
                 throw new Exception($"Too many trains, max is {NUMBER_TRAIN_MAX}");
@@ -98,18 +109,25 @@ namespace ElectricTrain
                 case TrainDirection.Forward:
                     arduino.digitalWrite(LeftPins[train], PinState.HIGH);
                     arduino.digitalWrite(RightPins[train], PinState.LOW);
+                    if (Speed[train] < 0)
+                        Speed[train] = -Speed[train];
                     break;
                 case TrainDirection.Backward:
                     arduino.digitalWrite(LeftPins[train], PinState.LOW);
                     arduino.digitalWrite(RightPins[train], PinState.HIGH);
+                    if (Speed[train] > 0)
+                        Speed[train] = -Speed[train];
                     break;
                 case TrainDirection.Stop:
                     arduino.digitalWrite(LeftPins[train], PinState.LOW);
                     arduino.digitalWrite(RightPins[train], PinState.LOW);
+                    if (Speed[train] != 0)
+                        Speed[train] = 0;
                     break;
                 default:
                     break;
             }
+            Direction = dir;
         }
     }
 }

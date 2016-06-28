@@ -46,16 +46,8 @@ namespace ElectricTrain.Controller
         private const string paramSwitchAngle = "sa";
         // Strings to be used for the page names
         const string pageDefault = "default.aspx";
-        const string pageCombo = "combo.aspx";
-        const string pageComboAll = "comboall.aspx";
         const string pageUtil = "util.aspx";
-        const string pageSingleOutput = "singlepwm.aspx";
-        const string pageSingleOutputAll = "singlepwmall.aspx";
-        const string pageSingleCST = "singlecst.aspx";
-        const string pagePWM = "combopwm.aspx";
-        const string pageContinuous = "continuous.aspx";
-        const string pageContinuousAll = "continuousall.aspx";
-        const string pageSingleTimeout = "timeout.aspx";
+        const string pageTrain = "train.aspx";
         const string pageSignal = "signal.aspx";
         const string pageSwitch = "switch.aspx";
         const string pageAll = "all.aspx";
@@ -66,7 +58,7 @@ namespace ElectricTrain.Controller
         const string paramComboRed = "rd";
         const string paramChannel = "ch";
         const string paramSinglePWM = "pw";
-        const string paramSingleOutput = "op";
+        const string paramTrain = "tr";
         const string paramComboPWM1 = "p1";
         const string paramComboPWM2 = "p2";
         const string paramContinuousFct = "fc";
