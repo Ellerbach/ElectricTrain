@@ -51,6 +51,7 @@ namespace ElectricTrain
             for (int i = 0; i < dis.Count; i++)
             {
                 Debug.WriteLine(string.Format("Serial device found: {0}", dis[i].Id));
+                //take the one which is NOT the default UART. Does not work with default UART.
                 if (dis[i].Id.IndexOf("UART0") == -1)
                 {
                     connection = new UsbSerial(dis[i]);

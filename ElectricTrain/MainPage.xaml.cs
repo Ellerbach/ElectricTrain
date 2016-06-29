@@ -45,7 +45,7 @@ namespace ElectricTrain
             var restRouteHandler = new RestRouteHandler();
             try
             {
-                webserver.RegisterRoute("file", new StaticFileRouteHandler(ApplicationData.Current.LocalFolder.Path));
+                webserver.RegisterRoute("file", new StaticFileRouteHandler(ApplicationData.Current.LocalFolder.Path + "\\file"));
                 webserver.RegisterRoute("", restRouteHandler);
             }
             catch (Exception ex)

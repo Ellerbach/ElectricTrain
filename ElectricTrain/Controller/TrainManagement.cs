@@ -62,13 +62,21 @@ namespace ElectricTrain.Controller
                 return new GetResponse(GetResponse.ResponseStatus.OK, ErrorAuth());
             return ProcessDisplayDefault(param);
         }
-        //train.aspx
+        
         [UriFormat("/train.aspx{param}")]
         public GetResponse Train(string param)
         {
             if (!SecCheck(param))
                 return new GetResponse(GetResponse.ResponseStatus.OK, ErrorAuth());
             return ProcessTrain(param);
+        }
+
+        [UriFormat("/signal.aspx{param}")]
+        public GetResponse Signal(string param)
+        {
+            if (!SecCheck(param))
+                return new GetResponse(GetResponse.ResponseStatus.OK, ErrorAuth());
+            return ProcessSignal(param);
         }
     }
 }

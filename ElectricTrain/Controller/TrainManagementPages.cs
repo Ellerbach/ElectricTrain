@@ -11,6 +11,22 @@ namespace ElectricTrain.Controller
 {
     partial class TrainManagement
     {
+        private GetResponse ProcessSignal(string rawURL)
+        {
+            List<Param> Params = Param.decryptParam(rawURL);
+            string strResp = "";
+            int mSpeed = Param.CheckConvertInt32(Params, paramSinglePWM);
+            byte mTrain = Param.CheckConvertByte(Params, paramTrain);
+
+            if (mTrain >= myTrain.NumberTrains)
+            {
+                strResp = strProblem;
+                return new GetResponse(GetResponse.ResponseStatus.OK, strResp);
+            }
+
+            strResp = strOK;
+            return new GetResponse(GetResponse.ResponseStatus.OK, strResp);
+        }
         private GetResponse ProcessTrain(string rawURL)
         {
             List<Param> Params = Param.decryptParam(rawURL);

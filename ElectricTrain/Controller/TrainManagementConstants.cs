@@ -50,7 +50,6 @@ namespace ElectricTrain.Controller
         const string pageTrain = "train.aspx";
         const string pageSignal = "signal.aspx";
         const string pageSwitch = "switch.aspx";
-        const string pageAll = "all.aspx";
         const string pageCircuit = "circ.aspx";
         const string pageCSS = "train.css";
         // Strings to be used for the param names

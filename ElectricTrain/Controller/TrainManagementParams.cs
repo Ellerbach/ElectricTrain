@@ -58,8 +58,8 @@ namespace ElectricTrain.Controller
                     return myParamRail;
 
                 mSignal = Param.CheckConvertByte(Params, paramNumberSignal);
-                if ((mSignal <= 0) || (mSignal > Signal.NUMBER_SIGNAL_MAX))
-                    mSignal = (byte)Signal.NUMBER_SIGNAL_MAX;
+                if ((mSignal <= 0) || (mSignal > ElectricTrain.Signal.NUMBER_SIGNAL_MAX))
+                    mSignal = (byte)ElectricTrain.Signal.NUMBER_SIGNAL_MAX;
                 mSwitch = Param.CheckConvertByte(Params, paramNumberSwitch);
                 if ((mSwitch <= 0) || (mSwitch > ElectricTrain.Switch.NUMBER_SWITCH_MAX))
                     mSwitch = (byte)ElectricTrain.Switch.NUMBER_SWITCH_MAX;
