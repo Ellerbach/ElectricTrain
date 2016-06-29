@@ -37,12 +37,12 @@ namespace ElectricTrain
             if (NumberTrains > NUMBER_TRAIN_MAX)
                 throw new Exception($"Too many trains, max is {NUMBER_TRAIN_MAX}");
             if (!IsInitialized)
-                InitAll(); //.Wait();
+                InitAll();
             
         }
 
 
-        private async Task InitAll()
+        private async void InitAll()
         {
             IsInitialized = true;
             //connection = new UsbSerial("VID_0403", "PID_6001");
@@ -68,7 +68,7 @@ namespace ElectricTrain
             IsConnected = true;
             Debug.Write("Connected to Arduino!");
             //initialize all the Pins
-            for(int i = 0; i<PWMPins.Length;i++)
+            for(int i = 0; i< NUMBER_TRAIN_MAX; i++)
             {
                 arduino.pinMode(PWMPins[i], PinMode.PWM);
                 arduino.pinMode(LeftPins[i], PinMode.OUTPUT);

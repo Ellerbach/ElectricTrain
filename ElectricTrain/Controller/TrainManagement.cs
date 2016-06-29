@@ -78,5 +78,14 @@ namespace ElectricTrain.Controller
                 return new GetResponse(GetResponse.ResponseStatus.OK, ErrorAuth());
             return ProcessSignal(param);
         }
+
+        [UriFormat("/circ.aspx{param}")]
+        public GetResponse Circuit(string param)
+        {
+            if (!SecCheck(param))
+                return new GetResponse(GetResponse.ResponseStatus.OK, ErrorAuth());
+            return ProcessCircuit(param);
+        }
+
     }
 }

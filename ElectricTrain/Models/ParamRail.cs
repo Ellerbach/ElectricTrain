@@ -13,6 +13,7 @@ namespace ElectricTrain.Models
         public int NumberOfSwitchs { get; set; }
         public ParamTrain[] Trains { get; set; }
         public ParamSwitchs[] Switchs { get; set; }
+        public ParamSignal[] Signals { get; set; }
         public string SecurityKey { get; set; }
 
     }
